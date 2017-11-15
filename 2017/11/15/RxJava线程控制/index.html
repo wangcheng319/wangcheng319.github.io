@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RxJava线程控制默认情况下被观察者和观察者是工作在同一个线程的，我们可以通过一个Rxjava最基本的应用得到验证： 123456789101112131415161718Observable&amp;lt;Integer&amp;gt; observable = Observable.create(new ObservableOnSubscribe&amp;lt;Integer&amp;gt;() &amp;#123;   @Ove">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava线程控制">
+<meta property="og:url" content="http://yoursite.com/2017/11/15/RxJava线程控制/index.html">
+<meta property="og:site_name" content="Wangc的Android博客">
+<meta property="og:description" content="RxJava线程控制默认情况下被观察者和观察者是工作在同一个线程的，我们可以通过一个Rxjava最基本的应用得到验证： 123456789101112131415161718Observable&amp;lt;Integer&amp;gt; observable = Observable.create(new ObservableOnSubscribe&amp;lt;Integer&amp;gt;() &amp;#123;   @Ove">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-15T14:08:51.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxJava线程控制">
+<meta name="twitter:description" content="RxJava线程控制默认情况下被观察者和观察者是工作在同一个线程的，我们可以通过一个Rxjava最基本的应用得到验证： 123456789101112131415161718Observable&amp;lt;Integer&amp;gt; observable = Observable.create(new ObservableOnSubscribe&amp;lt;Integer&amp;gt;() &amp;#123;   @Ove">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/15/RxJava线程控制/"/>
+
+
+
+
+
+  <title>RxJava线程控制 | Wangc的Android博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wangc的Android博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/15/RxJava线程控制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wangcheng319">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wangc的Android博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RxJava线程控制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-15T22:07:13+08:00">
+                2017-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="RxJava线程控制"><a href="#RxJava线程控制" class="headerlink" title="RxJava线程控制"></a>RxJava线程控制</h3><p>默认情况下被观察者和观察者是工作在同一个线程的，<br>我们可以通过一个Rxjava最基本的应用得到验证：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;Integer&gt; observable = Observable.create(<span class="keyword">new</span> ObservableOnSubscribe&lt;Integer&gt;() &#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(ObservableEmitter&lt;Integer&gt; emitter)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	Log.d(<span class="string">"==="</span>, <span class="string">"被观察者线程 : "</span> + Thread.currentThread().getName());</span><br><span class="line">    Log.d(<span class="string">"==="</span>, <span class="string">"emit 1"</span>);</span><br><span class="line">                emitter.onNext(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"> Consumer&lt;Integer&gt; consumer = <span class="keyword">new</span> Consumer&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Integer integer)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Log.d(<span class="string">"==="</span>, <span class="string">"观察者线程 :"</span> +          Thread.currentThread().getName());</span><br><span class="line">       Log.d(<span class="string">"==="</span>, <span class="string">"onNext: "</span> + integer);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        observable.subscribe(consumer);</span><br></pre></td></tr></table></figure>
+<p>这段代码只是在被观察者和观察者中分别打印出了自己工作的线程名称，然后我们得到的结果如下：</p>
+<blockquote>
+<p>10-13 03:51:02.519 7920-7920/? D/===: 被观察者线程 : main<br>        10-13 03:51:02.519 7920-7920/? D/===: emit 1<br>        10-13 03:51:02.519 7920-7920/? D/===: 观察者线程 :main<br>        10-13 03:51:02.519 7920-7920/? D/===: onNext: 1</p>
+</blockquote>
+<p>可以看到在没有主动的进行线程控制的情况下，被观察者和观察者默认都是工作在同一个线程中，<br>        因为我们这里是在Activity的onCreate方法中进行的，所以打印出来的都是在main线程中。<br>下面我们对上面的代码做一些修改：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribeOn(Schedulers.newThread())</span><br><span class="line">		  .subscribe(consumer);</span><br></pre></td></tr></table></figure></p>
+<p>打印结果：</p>
+<blockquote>
+<p>10-13 03:52:56.446 9607-9647/vico.xin.mvpdemo D/===: 被观察者线程 : RxNewThreadScheduler-1<br>                10-13 03:52:56.446 9607-9647/vico.xin.mvpdemo D/===: emit 1<br>                10-13 03:52:56.446 9607-9647/vico.xin.mvpdemo D/===: 观察者线程 :RxNewThreadScheduler-1<br>                10-13 03:52:56.446 9607-9647/vico.xin.mvpdemo D/===: onNext: 1</p>
+</blockquote>
+<p>修改被观察者线程，观察者的线程也变了<br>再把代码修改一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">observable.observeOn(Schedulers.newThread())</span><br><span class="line">					  .subscribe(consumer);</span><br></pre></td></tr></table></figure></p>
+<p>打印结果：</p>
+<blockquote>
+<p>10-13 03:55:44.360 12067-12067/vico.xin.mvpdemo D/===: 被观察者线程 : main<br>                10-13 03:55:44.360 12067-12067/vico.xin.mvpdemo D/===: emit 1<br>                10-13 03:55:44.363 12067-12104/vico.xin.mvpdemo D/===: 观察者线程 :RxNewThreadScheduler-1<br>                10-13 03:55:44.363 12067-12104/vico.xin.mvpdemo D/===: onNext: 1</p>
+</blockquote>
+<p>修改观察者的线程，被观察者并没有改变，还是在默认的main线程<br>            所以到这里大致可以认为subscribeOn()是指定被观察者的线程，observeOn()是指定观察者线程的。<br>            那么如果我想多次的更换被观察者和观察者的线程是不是可以呢？ 还是把之前的代码做一些修改，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribeOn(Schedulers.newThread())</span><br><span class="line">                .subscribeOn(Schedulers.io())</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">                .doOnNext(<span class="keyword">new</span> Consumer&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Integer integer)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	      Log.d(<span class="string">"==="</span>, <span class="string">"观察者线程 :"</span> +        Thread.currentThread().getName());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .observeOn(Schedulers.io())</span><br><span class="line">                .doOnNext(<span class="keyword">new</span> Consumer&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Integer integer)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        Log.d(<span class="string">"==="</span>, <span class="string">"观察者线程 :"</span> + Thread.currentThread().getName());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .subscribe(consumer);</span><br></pre></td></tr></table></figure>
+<p>打印结果：</p>
+<blockquote>
+<p>10-13 06:17:57.650 7859-7899/vico.xin.mvpdemo D/===: 被观察者线程 : RxNewThreadScheduler-1<br>                10-13 06:17:57.654 7859-7899/vico.xin.mvpdemo D/===: emit 1<br>                10-13 06:17:57.668 7859-7859/vico.xin.mvpdemo D/===: 观察者线程 :main<br>                10-13 06:17:57.669 7859-7903/vico.xin.mvpdemo D/===: 观察者线程 :RxCachedThreadScheduler-2<br>                10-13 06:17:57.669 7859-7903/vico.xin.mvpdemo D/===: 观察者线程 :RxCachedThreadScheduler-2<br>                10-13 06:17:57.670 7859-7903/vico.xin.mvpdemo D/===: onNext: 1</p>
+</blockquote>
+<p>我们具体分析一下打印结果，先说被观察者，如果我们不修改线程它应该默认的是在main线程中，我们调用了两次subscribeOn（），分别把线程改为一个新线程和IO线程，但是我们在打印结果中只看到了RxNewThreadScheduler-1  这个新线程，后面的IO线程并没有生效，<br>                于是我们得出结论，被观察者虽然说可以多次的调用subscribeOn（）修改线程，但是只有第一次会生效，后面的会被忽略掉。<br>                再来看观察者，同样它默认工作在main线程中，然后调用了observeOn（）两次去修改线程，<br>                打印结果也显示修改了两次，这样就得出每调用observeOn()一次，观察者线程就修改一次。</p>
+<p>###线程控制在Android中的应用<br>应该说所有耗时的操作都可以利用Rxjava将线程调到非UI线程中去实现，然后得到结果后再到UI线程中来展示，例如网络请求，数据库操作等<br>                    最主要也是最常见的就是和Retrofit配合，来举一个简单的例子，模仿一个登录功能<br>                    首先要保证项目中已经引入了Retrofit,然后定义API接口:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Api</span> </span>&#123;</span><br><span class="line">		<span class="meta">@FormUrlEncoded</span></span><br><span class="line">		<span class="meta">@POST</span>(<span class="string">"user/login"</span>)</span><br><span class="line">Observable&lt;BaseDto&lt;UserDto&gt;&gt; Login(<span class="meta">@Field</span>(<span class="string">"json"</span>) String json);</span><br><span class="line">					&#125;</span><br><span class="line">					</span><br><span class="line"><span class="comment">//再创建一个Retrofit：</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Retrofit <span class="title">create</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	OkHttpClient.Builder builder = <span class="keyword">new</span> OkHttpClient().newBuilder();</span><br><span class="line">						<span class="keyword">return</span> <span class="keyword">new</span> Retrofit.Builder().baseUrl(<span class="string">"your baseUrl"</span>)</span><br><span class="line">				  .client(builder.build())								.addConverterFactory(GsonConverterFactory.create())						.addCallAdapterFactory(RxJava2CallAdapterFactory.create())</span><br><span class="line">.build();</span><br><span class="line">					&#125;</span><br><span class="line">					</span><br><span class="line"><span class="comment">//开始登录：</span></span><br><span class="line">Api api = retrofit.create(Api.class);</span><br><span class="line">api.login(request)</span><br><span class="line">   .subscribeOn(Schedulers.io()) 在IO线程进行网络请求							       .observeOn(AndroidSchedulers.mainThread())  回到主线程去处理请求结果</span><br><span class="line">.subscribe(<span class="keyword">new</span> Observer&lt;UserDto&gt;() &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSubscribe</span><span class="params">(Disposable d)</span> </span>&#123;&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(UserDto userDto)</span> </span>&#123;</span><br><span class="line">		Log.e(<span class="string">"==="</span>,<span class="string">"登录成功"</span>)</span><br><span class="line">					&#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123; </span><br><span class="line">	  	Log.e(<span class="string">"==="</span>,<span class="string">"登录失败"</span>)</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line">									</span><br><span class="line">						&#125;</span><br><span class="line">			&#125;);</span><br></pre></td></tr></table></figure>
+<p>结合前一章，应该在onSubscribe()中将Disposable 利用 CompositeDisposable.add()添加到CompositeDisposable容器中去，<br>                    然后在activity退出的时候调用CompositeDisposable.clear()解除订阅关系。<br>                    这就是一个最简单的Rxjava和Retrofit的组合使用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/15/RxJava学习（一）/" rel="next" title="RxJava学习">
+                <i class="fa fa-chevron-left"></i> RxJava学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">wangcheng319</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RxJava线程控制"><span class="nav-number">1.</span> <span class="nav-text">RxJava线程控制</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangcheng319</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
