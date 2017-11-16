@@ -105,7 +105,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20171016204324401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171016204532672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-11-14T15:16:53.172Z">
+<meta property="og:updated_time" content="2017-11-16T13:42:29.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Bitmap基础知识">
 <meta name="twitter:description" content="Bitmap介绍Bitmap是Android系统中的图像处理中最重要类之一。Bitmap可以获取图像文件信息，对图像进行剪切、旋转、缩放，压缩等操作，并可以以指定格式保存图像文件。 创建Bitmap有两种方法可以创建Bitmap对象，分别是通过Bitmap.createBitmap()和BitmapFactory的decode系列静态方法创建Bitmap对象。 Bitmap的静态方法createB">
@@ -339,6 +339,7 @@
 <p>3, decodeStream 从输入流加载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bm = BitmapFactory.decodeStream(stream)</span><br></pre></td></tr></table></figure>
 <p>  这是一个耗时操作，要在子线程中执行</p>
+<a id="more"></a>
 <p> 4,decodeByteArray 从字节数组中加载</p>
 <blockquote>
 <font size="2">Bitmap bm = BitmapFactory.decodeByteArray(myByte,0,myByte.length);</font>
