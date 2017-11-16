@@ -451,17 +451,15 @@
 
       
         
-          <p>####Android项目中引入Rxjava</p>
-<blockquote>
+          <h3 id="Android项目中引入Rxjava"><a href="#Android项目中引入Rxjava" class="headerlink" title="Android项目中引入Rxjava"></a>Android项目中引入Rxjava</h3><blockquote>
 <p>在Android中使用RxJava2非常简单, 只需要在Gradle配置:<br><code>compile &#39;io.reactivex.rxjava2:rxjava:2.1.0&#39;
   compile &#39;io.reactivex.rxjava2:rxandroid:2.0.1&#39;</code></p>
 </blockquote>
-<p>####主要类介绍</p>
-<blockquote>
+<h3 id="主要类介绍"><a href="#主要类介绍" class="headerlink" title="主要类介绍"></a>主要类介绍</h3><blockquote>
 <font size="2" face="微软雅黑"> Observable 被观察者（事件源），不处理背压<br>Observer 观察者，用于订阅Observable<br>Subject 继承了Observable实现了Observer，既可做观察者也可做被观察者，通常作为两者的桥梁或代理<br>Flowable(Publisher) 被观察者（事件源），有背压处理策略<br>Subscriber 观察者，用于订阅Flowable<br>Processor 实现类FlowableProcessor继承了Flowable实现了FlowableSubscriber，类似SubjectSingle/SingleObserver 仅发生一次消息，遵循onSubscribe(onSuccess | onError)?<br>Completable/CompletableObserver 仅发生一次消息，遵循onSubscribe (onComplete | onError)?<br>Maybe/MaybeObserver 仅发生一次消息，遵循onSubscribe (onSuccess | onError | onComplete)?<br>        Disposable 替代了 RxJava1 中的Subscription ，实现该接口的资源具备可被取消 (dispose) 的能力<br>        Subscription 在Subscriber订阅时回调的对象，具备拉取 (request) 和取消订阅 (cancel) 的能力<br></font>
 
 </blockquote>
-<p>####Rxjava基本使用</p>
+<h3 id="Rxjava基本使用"><a href="#Rxjava基本使用" class="headerlink" title="Rxjava基本使用"></a>Rxjava基本使用</h3>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/11/15/RxJava学习（一）/#more" rel="contents">

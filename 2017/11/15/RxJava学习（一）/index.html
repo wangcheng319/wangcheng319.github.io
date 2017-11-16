@@ -96,17 +96,17 @@
 
 
 
-<meta name="description" content="####Android项目中引入Rxjava  在Android中使用RxJava2非常简单, 只需要在Gradle配置:compile &amp;#39;io.reactivex.rxjava2:rxjava:2.1.0&amp;#39;   compile &amp;#39;io.reactivex.rxjava2:rxandroid:2.0.1&amp;#39;  ####主要类介绍   Observable 被观察者（事">
+<meta name="description" content="Android项目中引入Rxjava 在Android中使用RxJava2非常简单, 只需要在Gradle配置:compile &amp;#39;io.reactivex.rxjava2:rxjava:2.1.0&amp;#39;   compile &amp;#39;io.reactivex.rxjava2:rxandroid:2.0.1&amp;#39;  主要类介绍  Observable 被观察者（事件源），不处理背压O">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RxJava学习">
 <meta property="og:url" content="http://yoursite.com/2017/11/15/RxJava学习（一）/index.html">
 <meta property="og:site_name" content="Wangc的Android博客">
-<meta property="og:description" content="####Android项目中引入Rxjava  在Android中使用RxJava2非常简单, 只需要在Gradle配置:compile &amp;#39;io.reactivex.rxjava2:rxjava:2.1.0&amp;#39;   compile &amp;#39;io.reactivex.rxjava2:rxandroid:2.0.1&amp;#39;  ####主要类介绍   Observable 被观察者（事">
+<meta property="og:description" content="Android项目中引入Rxjava 在Android中使用RxJava2非常简单, 只需要在Gradle配置:compile &amp;#39;io.reactivex.rxjava2:rxjava:2.1.0&amp;#39;   compile &amp;#39;io.reactivex.rxjava2:rxandroid:2.0.1&amp;#39;  主要类介绍  Observable 被观察者（事件源），不处理背压O">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-16T13:42:13.410Z">
+<meta property="og:updated_time" content="2017-11-16T13:45:48.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RxJava学习">
-<meta name="twitter:description" content="####Android项目中引入Rxjava  在Android中使用RxJava2非常简单, 只需要在Gradle配置:compile &amp;#39;io.reactivex.rxjava2:rxjava:2.1.0&amp;#39;   compile &amp;#39;io.reactivex.rxjava2:rxandroid:2.0.1&amp;#39;  ####主要类介绍   Observable 被观察者（事">
+<meta name="twitter:description" content="Android项目中引入Rxjava 在Android中使用RxJava2非常简单, 只需要在Gradle配置:compile &amp;#39;io.reactivex.rxjava2:rxjava:2.1.0&amp;#39;   compile &amp;#39;io.reactivex.rxjava2:rxandroid:2.0.1&amp;#39;  主要类介绍  Observable 被观察者（事件源），不处理背压O">
 
 
 
@@ -326,18 +326,15 @@
       
 
       
-        <p>####Android项目中引入Rxjava</p>
-<blockquote>
+        <h3 id="Android项目中引入Rxjava"><a href="#Android项目中引入Rxjava" class="headerlink" title="Android项目中引入Rxjava"></a>Android项目中引入Rxjava</h3><blockquote>
 <p>在Android中使用RxJava2非常简单, 只需要在Gradle配置:<br><code>compile &#39;io.reactivex.rxjava2:rxjava:2.1.0&#39;
   compile &#39;io.reactivex.rxjava2:rxandroid:2.0.1&#39;</code></p>
 </blockquote>
-<p>####主要类介绍</p>
-<blockquote>
+<h3 id="主要类介绍"><a href="#主要类介绍" class="headerlink" title="主要类介绍"></a>主要类介绍</h3><blockquote>
 <font size="2" face="微软雅黑"> Observable 被观察者（事件源），不处理背压<br>Observer 观察者，用于订阅Observable<br>Subject 继承了Observable实现了Observer，既可做观察者也可做被观察者，通常作为两者的桥梁或代理<br>Flowable(Publisher) 被观察者（事件源），有背压处理策略<br>Subscriber 观察者，用于订阅Flowable<br>Processor 实现类FlowableProcessor继承了Flowable实现了FlowableSubscriber，类似SubjectSingle/SingleObserver 仅发生一次消息，遵循onSubscribe(onSuccess | onError)?<br>Completable/CompletableObserver 仅发生一次消息，遵循onSubscribe (onComplete | onError)?<br>Maybe/MaybeObserver 仅发生一次消息，遵循onSubscribe (onSuccess | onError | onComplete)?<br>        Disposable 替代了 RxJava1 中的Subscription ，实现该接口的资源具备可被取消 (dispose) 的能力<br>        Subscription 在Subscriber订阅时回调的对象，具备拉取 (request) 和取消订阅 (cancel) 的能力<br></font>
 
 </blockquote>
-<p>####Rxjava基本使用</p>
-<a id="more"></a>
+<h3 id="Rxjava基本使用"><a href="#Rxjava基本使用" class="headerlink" title="Rxjava基本使用"></a>Rxjava基本使用</h3><a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建被观察者：</span></span><br><span class="line">Observable&lt;Integer&gt; observable = Observable.create(<span class="keyword">new</span> ObservableOnSubscribe&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(ObservableEmitter&lt;Integer&gt; emitter)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                emitter.onNext(<span class="number">1</span>);</span><br><span class="line">                emitter.onNext(<span class="number">2</span>);</span><br><span class="line">                emitter.onNext(<span class="number">3</span>);</span><br><span class="line">                emitter.onComplete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"><span class="comment">//创建观察者：</span></span><br><span class="line">Observer&lt;Integer&gt; observer = <span class="keyword">new</span> Observer&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSubscribe</span><span class="params">(Disposable d)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"subscribe"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Integer value)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">""</span> + value);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"error"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"complete"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//建立连接</span></span><br><span class="line">        observable.subscribe(observer);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>上面的代码可以改成为下面的链式结构，这也是Rxjava的一个优点<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Observable.create(<span class="keyword">new</span> ObservableOnSubscribe&lt;Integer&gt;() &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(ObservableEmitter&lt;Integer&gt; emitter)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                emitter.onNext(<span class="number">1</span>);</span><br><span class="line">                emitter.onNext(<span class="number">2</span>);</span><br><span class="line">                emitter.onNext(<span class="number">3</span>);</span><br><span class="line">                emitter.onComplete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).subscribe(<span class="keyword">new</span> Observer&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSubscribe</span><span class="params">(Disposable d)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"subscribe"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Integer value)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">""</span> + value);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"error"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"complete"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
@@ -431,8 +428,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -488,6 +494,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android项目中引入Rxjava"><span class="nav-number">1.</span> <span class="nav-text">Android项目中引入Rxjava</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要类介绍"><span class="nav-number">2.</span> <span class="nav-text">主要类介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rxjava基本使用"><span class="nav-number">3.</span> <span class="nav-text">Rxjava基本使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
