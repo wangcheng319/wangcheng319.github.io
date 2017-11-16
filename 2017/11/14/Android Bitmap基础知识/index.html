@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Bitmap介绍Bitmap是Android系统中的图像处理中最重要类之一。Bitmap可以获取图像文件信息，对图像进行剪切、旋转、缩放，压缩等操作，并可以以指定格式保存图像文件。 创建Bitmap有两种方法可以创建Bitmap对象，分别是通过Bitmap.createBitmap()和BitmapFactory的decode系列静态方法创建Bitmap对象。 Bitmap的静态方法createB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Bitmap基础知识">
+<meta property="og:url" content="http://yoursite.com/2017/11/14/Android Bitmap基础知识/index.html">
+<meta property="og:site_name" content="Wangc的Android博客">
+<meta property="og:description" content="Bitmap介绍Bitmap是Android系统中的图像处理中最重要类之一。Bitmap可以获取图像文件信息，对图像进行剪切、旋转、缩放，压缩等操作，并可以以指定格式保存图像文件。 创建Bitmap有两种方法可以创建Bitmap对象，分别是通过Bitmap.createBitmap()和BitmapFactory的decode系列静态方法创建Bitmap对象。 Bitmap的静态方法createB">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20171016204324401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171016204532672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-11-16T13:42:29.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Bitmap基础知识">
+<meta name="twitter:description" content="Bitmap介绍Bitmap是Android系统中的图像处理中最重要类之一。Bitmap可以获取图像文件信息，对图像进行剪切、旋转、缩放，压缩等操作，并可以以指定格式保存图像文件。 创建Bitmap有两种方法可以创建Bitmap对象，分别是通过Bitmap.createBitmap()和BitmapFactory的decode系列静态方法创建Bitmap对象。 Bitmap的静态方法createB">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20171016204324401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/14/Android Bitmap基础知识/"/>
+
+
+
+
+
+  <title>Android Bitmap基础知识 | Wangc的Android博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wangc的Android博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/14/Android Bitmap基础知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wangcheng319">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wangc的Android博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Bitmap基础知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-14T22:46:19+08:00">
+                2017-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Bitmap介绍"><a href="#Bitmap介绍" class="headerlink" title="Bitmap介绍"></a>Bitmap介绍</h3><p>Bitmap是Android系统中的图像处理中最重要类之一。Bitmap可以获取图像文件信息，对图像进行剪切、旋转、缩放，压缩等操作，并可以以指定格式保存图像文件。</p>
+<h3 id="创建Bitmap"><a href="#创建Bitmap" class="headerlink" title="创建Bitmap"></a>创建Bitmap</h3><p>有两种方法可以创建Bitmap对象，分别是通过Bitmap.createBitmap()和BitmapFactory的decode系列静态方法创建Bitmap对象。</p>
+<p>Bitmap的静态方法createBitmap()：<br><img src="http://img.blog.csdn.net/20171016204324401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>BitmapFactory的decode系列静态方法：<br><img src="http://img.blog.csdn.net/20171016204532672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2FuZ2NoZW5nXw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>总的来说分为四类</p>
+<p> 1,decodeFile 从文件系统加载<br>                a,通过Intent打开本地图片或照片<br>                b,根据uri获取图片的路径<br>                c,根据路径解析bitmap:Bitmap bm = BitmapFactory.decodeFile(sd_path)</p>
+<p> 2,decodeResource 以R.drawable.xxx的形式从本地资源中加载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.aaa);</span><br></pre></td></tr></table></figure></p>
+<p>3, decodeStream 从输入流加载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bm = BitmapFactory.decodeStream(stream)</span><br></pre></td></tr></table></figure>
+<p>  这是一个耗时操作，要在子线程中执行</p>
+<a id="more"></a>
+<p> 4,decodeByteArray 从字节数组中加载</p>
+<blockquote>
+<font size="2">Bitmap bm = BitmapFactory.decodeByteArray(myByte,0,myByte.length);</font>
+
+</blockquote>
+<h3 id="Bitmap的颜色配置信息"><a href="#Bitmap的颜色配置信息" class="headerlink" title="Bitmap的颜色配置信息"></a>Bitmap的颜色配置信息</h3><p>在Bitmap的源码中有一个内部枚举类Config：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static enum Config &#123;</span><br><span class="line">    ALPHA_8,</span><br><span class="line">    ARGB_4444,</span><br><span class="line">    ARGB_8888,</span><br><span class="line">    RGB_565;</span><br><span class="line"></span><br><span class="line">    private Config() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>ALPHA_8</p>
+<p>  颜色信息只由透明度组成，占8位。</p>
+</li>
+<li><p>ARGB_4444</p>
+<p>  颜色信息由透明度与R（Red），G（Green），B（Blue）四部分组成，每个部分都占4位，总共占16位。</p>
+</li>
+<li><p>ARGB_8888</p>
+<p>  颜色信息由透明度与R（Red），G（Green），B（Blue）四部分组成，每个部分都占8位，总共占32位。<br>  是Bitmap默认的颜色配置信息，也是最占空间的一种配置。</p>
+</li>
+<li><p>RGB_565</p>
+<p>  颜色信息由R（Red），G（Green），B（Blue）三部分组成，R占5位，G占6位，B占5位，总共占16位。</p>
+</li>
+</ul>
+<p>Android默认的色彩模式为ARGB_8888，这个色彩模式色彩最细腻，显示质量最高。但同样的，占用的内存也最大。</p>
+<p>BitmapFactory.Options的inPreferredConfig参数可以 指定decode到内存中，手机中所采用的编码，可选值定义在Bitmap.Config中。缺省值是ARGB_8888。</p>
+<p>假设一张1024<em>1024，模式为ARGB_8888的图片，那么它占有的内存就是：1024</em>1024<em>4 = 4MB<br>模式为RGB_565为图片占用的内存就是：1024</em>1024*2 = 2MB</p>
+<p>在做Bitmap的优化的时候，这里有一个非常重要的设置，我们通常会使用Bitmap.Config.RGB_565这个配置，因为Bitmap.Config.ALPHA_8只有透明度，显示一般图片没有意义，Bitmap.Config.ARGB_4444显示图片不清楚，Bitmap.Config.ARGB_8888占用内存最多。</p>
+<pre><code>需要了解的一点是，在大的图片框架中Glide默认的Bitmap格式是RGB_565，Picasso默认的是ARGB_8888格式。
+所以Glide在处理同张图片占用内存只有Picasso的一半
+</code></pre><h3 id="Bitmap的常用操作"><a href="#Bitmap的常用操作" class="headerlink" title="Bitmap的常用操作"></a>Bitmap的常用操作</h3><h4 id="1-Bitmap裁剪图像"><a href="#1-Bitmap裁剪图像" class="headerlink" title="1.Bitmap裁剪图像"></a>1.Bitmap裁剪图像</h4><p>Bitmap裁剪图像有两种方式：</p>
+<blockquote>
+<font size="2">Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height)</font>
+
+
+</blockquote>
+<p>根据源Bitmap对象source，创建出source对象裁剪后的图像的Bitmap。x,y分别代表裁剪时，x轴和y轴的第一个像素，width，height分别表示裁剪后的图像的宽度和高度。<br>注意：x+width要小于等于source的宽度，y+height要小于等于source的高度。</p>
+<blockquote>
+<font size="2">Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height,Matrix m, boolean filter)</font>
+
+</blockquote>
+<p>这个方法只比上面的方法多了m和filter这两个参数，m是一个Matrix（矩阵）对象，可以进行缩放，旋转，移动等动作，filter为true时表示source会被过滤，仅仅当m操作不仅包含移动操作，还包含别的操作时才适用。</p>
+<h4 id="2-Bitmap缩放，旋转，移动"><a href="#2-Bitmap缩放，旋转，移动" class="headerlink" title="2.Bitmap缩放，旋转，移动"></a>2.Bitmap缩放，旋转，移动</h4><p>Bitmap缩放，旋转，移动，倾斜图像其实就是通过</p>
+<p><font size="2">Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height,Matrix m, boolean filter)</font><br>方法实现的，只是在实现这些功能的同时还可以实现图像的裁剪。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">   // 定义矩阵对象</span><br><span class="line">Matrix matrix = new Matrix();</span><br><span class="line">   // 缩放图像</span><br><span class="line">matrix.postScale(0.8f, 0.9f);</span><br><span class="line">   // 向左旋转（逆时针旋转）45度，参数为正则向右旋转（顺时针旋转）</span><br><span class="line">matrix.postRotate(-45);</span><br><span class="line">   //移动图像</span><br><span class="line">   //matrix.postTranslate(100,80);</span><br><span class="line">Bitmap bitmap = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),</span><br><span class="line">             matrix, true);</span><br></pre></td></tr></table></figure></p>
+<p>Matrix的postScale和postRotate方法还有多带两个参数的重载方法postScale(float sx, float sy, float px, float py)和postRotate(float degrees, float px, float py)，后两个参数px和py都表示以该点为中心进行操作。<br>注意：虽然Matrix还可以调用postSkew方法进行倾斜操作，但是却不可以在此时创建Bitmap时使用。</p>
+<h4 id="3-Bitmap保存图像"><a href="#3-Bitmap保存图像" class="headerlink" title="3.Bitmap保存图像"></a>3.Bitmap保存图像</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bitmap = <span class="keyword">null</span>;</span><br><span class="line">bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.test);</span><br><span class="line">        File file=<span class="keyword">new</span> File(getFilesDir(),<span class="string">"test.jpg"</span>);</span><br><span class="line">        <span class="keyword">if</span>(file.exists())&#123;</span><br><span class="line">            file.delete();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">			FileOutputStream outputStream=<span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            bitmap.compress(Bitmap.CompressFormat.JPEG,<span class="number">90</span>,outputStream);</span><br><span class="line">            outputStream.flush();</span><br><span class="line">            outputStream.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> (!bitmap.isRecycle()) &#123;</span><br><span class="line">	    bitmap.recycle();   <span class="comment">//回收图片所占的内存</span></span><br><span class="line">	    bitmap = <span class="keyword">null</span>;</span><br><span class="line">	    system.gc();  <span class="comment">//提醒系统及时回收</span></span><br><span class="line">		&#125;<span class="comment">//释放bitmap的资源，这是一个不可逆转的操作</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-BitmapFactory通过BitmapFactory-Options对图像进行操作"><a href="#4-BitmapFactory通过BitmapFactory-Options对图像进行操作" class="headerlink" title="4.BitmapFactory通过BitmapFactory.Options对图像进行操作"></a>4.BitmapFactory通过BitmapFactory.Options对图像进行操作</h4><p>BitmapFactory.Options中有很多非常有用的属性，理解的好的话可以大大的降低在使用Bitmap的时候出现OOM。BitmapFactory.Options的基本使用：</p>
+<pre><code class="java"><span class="comment">// 第一次加载时 将inJustDecodeBounds设置为true 表示不真正加载图片到内存 </span>
+BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();
+        options.inJustDecodeBounds = <span class="keyword">true</span>;
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inPreferredConfig  = Bitmap.Config.RGB_565;
+<span class="keyword">return</span> BitmapFactory.decodeResource(res, resId, options);
+</code></pre>
+<p><strong>inJustDecodeBounds：</strong><br>        这是一个Boolean类型的参数，如果将这个值置为true，那么在解码的时候将不会返回bitmap，只会返回这个bitmap的尺寸。这里可以获取到Bitmap的Width和Height，但又不把它读取到内存中。<br><strong>inSampleSize：</strong><br>        这个值是一个int，当它小于1的时候，将会被当做1处理，如果大于1，那么就会按照比例（1 / inSampleSize）缩小bitmap的宽和高、降低分辨率，大于1时这个值将会被处置为2的倍数。例如，width=100，height=100，inSampleSize=2，那么就会将bitmap处理为，width=50，height=50，宽高降为1 / 2，像素数降为1 / 4，响应的内存占用也会只有1/4。<br>    当然这个值也不是随便指定的，Android官方有一个计算方式来获取这个值：</p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">calculateInSampleSize</span><span class="params">(BitmapFactory.Options op, <span class="keyword">int</span> reqWidth,  </span></span>
+<span class="function"><span class="params">            <span class="keyword">int</span> reqheight)</span> </span>{  
+        <span class="keyword">int</span> originalWidth = op.outWidth;  
+        <span class="keyword">int</span> originalHeight = op.outHeight;  
+        <span class="keyword">int</span> inSampleSize = <span class="number">1</span>;  
+        <span class="keyword">if</span> (originalWidth &gt; reqWidth || originalHeight &gt; reqheight) {  
+            <span class="keyword">int</span> halfWidth = originalWidth / <span class="number">2</span>;  
+            <span class="keyword">int</span> halfHeight = originalHeight / <span class="number">2</span>;  
+            <span class="keyword">while</span> ((halfWidth / inSampleSize &gt; reqWidth)  
+                    &amp;&amp;(halfHeight / inSampleSize &gt; reqheight)) {  
+                inSampleSize *= <span class="number">2</span>;  
+
+            }  
+        }  
+        <span class="keyword">return</span> inSampleSize;  
+    }
+</code></pre>
+<p><strong>inPreferredConfig：</strong><br>        用来设置上面提到的色彩模式，默认值是ARGB_8888，一般采用RGB_565模式。<br><strong>inScaled：</strong><br>    设置这个Bitmap是否可以被缩放，默认值是true，表示可以被缩放。<br><strong>inPurgeable和inInputShareable：</strong><br>    这两个在5.0已经被弃用。<br><strong>outWidth和outHeight：</strong><br>    表示这个Bitmap的宽和高，一般和inJustDecodeBounds一起使用来获得Bitmap的宽高，但是不加载到内存。</p>
+<h3 id="使用Bitmap的注意事项"><a href="#使用Bitmap的注意事项" class="headerlink" title="使用Bitmap的注意事项"></a>使用Bitmap的注意事项</h3><p>这些注意事项主要是为了避免在使用Bitmap的时候出现OutOfMemory，然后APP Crash掉。</p>
+<h4 id="1-Bitmap及时释放"><a href="#1-Bitmap及时释放" class="headerlink" title="1.Bitmap及时释放"></a>1.Bitmap及时释放</h4><pre><code class="java"><span class="keyword">if</span>(bitmap != <span class="keyword">null</span> &amp;&amp; !bitmap.isRecycled()){  
+    bitmap.recycle();  
+    bitmap = <span class="keyword">null</span>;  
+}  
+System.gc();
+</code></pre>
+<h4 id="2-捕获异常"><a href="#2-捕获异常" class="headerlink" title="2.捕获异常"></a>2.捕获异常</h4><h4 id="3-Bitmap复用"><a href="#3-Bitmap复用" class="headerlink" title="3.Bitmap复用"></a>3.Bitmap复用</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/13/test/" rel="next" title="test">
+                <i class="fa fa-chevron-left"></i> test
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/15/RxJava学习（一）/" rel="prev" title="RxJava学习">
+                RxJava学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="wangcheng319" />
+            
+              <p class="site-author-name" itemprop="name">wangcheng319</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/wangcheng319" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap介绍"><span class="nav-number">1.</span> <span class="nav-text">Bitmap介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Bitmap"><span class="nav-number">2.</span> <span class="nav-text">创建Bitmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的颜色配置信息"><span class="nav-number">3.</span> <span class="nav-text">Bitmap的颜色配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的常用操作"><span class="nav-number">4.</span> <span class="nav-text">Bitmap的常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Bitmap裁剪图像"><span class="nav-number">4.1.</span> <span class="nav-text">1.Bitmap裁剪图像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Bitmap缩放，旋转，移动"><span class="nav-number">4.2.</span> <span class="nav-text">2.Bitmap缩放，旋转，移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Bitmap保存图像"><span class="nav-number">4.3.</span> <span class="nav-text">3.Bitmap保存图像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-BitmapFactory通过BitmapFactory-Options对图像进行操作"><span class="nav-number">4.4.</span> <span class="nav-text">4.BitmapFactory通过BitmapFactory.Options对图像进行操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Bitmap的注意事项"><span class="nav-number">5.</span> <span class="nav-text">使用Bitmap的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Bitmap及时释放"><span class="nav-number">5.1.</span> <span class="nav-text">1.Bitmap及时释放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-捕获异常"><span class="nav-number">5.2.</span> <span class="nav-text">2.捕获异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Bitmap复用"><span class="nav-number">5.3.</span> <span class="nav-text">3.Bitmap复用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wangcheng319</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
